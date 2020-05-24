@@ -104,3 +104,20 @@ plt.title('Mean absolute error')
 plt.ylabel('metrics')
 plt.xlabel('epochs')
 plt.legend(loc='upper right')
+
+# 載入模型
+model = keras.models.load_model('lab2-logs/models/Best-model-1.h5')
+# 先將房屋價格取出
+y_test = np.array(test_data['price'])
+# 標準化數據
+test_data = (test_data - mean) / std
+# 將輸入數據存成Numpy 格式
+x_test = np.array(test_data.drop('price', axis='columns'))
+# 預測測試數據
+y_pred = model.predict(x_test)
+# 將預測結果轉換回來(因為訓練時的訓練目標也有經過標準化)
+y_pred = np.reshape(y_pred * std['price'] + mean['price'], y_test.shape)
+# 計算平均的誤差百分比
+percentage_error = np.mean(np.abs(y_test - y_pred)) / np.mean(y_test) * 100
+# 顯示誤差百分比
+print("Model_1 Percentage Error: {:.2f}%".format(percentage_error))
