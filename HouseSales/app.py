@@ -70,7 +70,8 @@ model.compile(keras.optimizers.Adam(0.001),
               metrics=[keras.metrics.MeanAbsoluteError()])
 
 model_dir = 'lab2-logs/models/'
-os.makedirs(model_dir)
+if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
 
 # TensorBoard回調函數會幫忙紀錄訓練資訊，並存成TensorBoard的紀錄檔
 log_dir = os.path.join('lab2-logs', 'model-1')
@@ -121,3 +122,76 @@ y_pred = np.reshape(y_pred * std['price'] + mean['price'], y_test.shape)
 percentage_error = np.mean(np.abs(y_test - y_pred)) / np.mean(y_test) * 100
 # 顯示誤差百分比
 print("Model_1 Percentage Error: {:.2f}%".format(percentage_error))
+
+# %load_ext tensorboard
+# %tensorboard --port 9530 --logdir lab2-logs
+
+# 過擬合-減少網路權重
+model_2 = keras.Sequential(name='model-2')
+model_2.add(layers.Dense(16, activation='relu', input_shape=(21,)))
+model_2.add(layers.Dense(16, activation='relu'))
+model_2.add(layers.Dense(1))
+
+model_2.compile(keras.optimizers.Adam(0.001),
+                loss=keras.losses.MeanSquaredError(),
+                metrics=[keras.metrics.MeanAbsoluteError()])
+
+log_dir = os.path.join('lab2-logs', 'model-2')
+model_cbk = keras.callbacks.TensorBoard(log_dir=log_dir)
+model_mckp = keras.callbacks.ModelCheckpoint(model_dir + '/Best-model-2.h5', 
+                                             monitor='val_mean_absolute_error', 
+                                             save_best_only=True, 
+                                             mode='min')
+model_2.fit(x_train, y_train, 
+            batch_size=64 ,
+            epochs=300, 
+            validation_data=(x_val, y_val), 
+            callbacks=[model_cbk, model_mckp])
+
+# 過擬合-加入L1或L2 正則化
+model_3 = keras.Sequential(name='model-3')
+model_3.add(layers.Dense(64, 
+                         kernel_regularizer=keras.regularizers.l2(0.001), 
+                         activation='relu', input_shape=(21,)))
+model_3.add(layers.Dense(64, kernel_regularizer=keras.regularizers.l2(0.001), activation='relu'))
+model_3.add(layers.Dense(1))
+
+model_3.compile(keras.optimizers.Adam(0.001),
+                loss=keras.losses.MeanSquaredError(),
+                metrics=[keras.metrics.MeanAbsoluteError()])
+
+log_dir = os.path.join('lab2-logs', 'model-3')
+model_cbk = keras.callbacks.TensorBoard(log_dir=log_dir)
+model_mckp = keras.callbacks.ModelCheckpoint(model_dir + '/Best-model-3.h5', 
+                                             monitor='val_mean_absolute_error', 
+                                             save_best_only=True, 
+                                             mode='min')
+model_3.fit(x_train, y_train, 
+            batch_size=64 ,
+            epochs=300, 
+            validation_data=(x_val, y_val), 
+            callbacks=[model_cbk, model_mckp])
+
+# 過擬合-加入 Dropout
+model_4 = keras.Sequential(name='model-4')
+model_4.add(layers.Dense(64, activation='relu', input_shape=(21,)))
+model_4.add(layers.Dropout(0.3))
+model_4.add(layers.Dense(64, activation='relu'))
+model_4.add(layers.Dropout(0.3))
+model_4.add(layers.Dense(1))
+
+model_4.compile(keras.optimizers.Adam(0.001),
+                loss=keras.losses.MeanSquaredError(),
+                metrics=[keras.metrics.MeanAbsoluteError()])
+
+log_dir = os.path.join('lab2-logs', 'model-4')
+model_cbk = keras.callbacks.TensorBoard(log_dir=log_dir)
+model_mckp = keras.callbacks.ModelCheckpoint(model_dir + '/Best-model-4.h5', 
+                                             monitor='val_mean_absolute_error', 
+                                             save_best_only=True, 
+                                             mode='min')
+model_4.fit(x_train, y_train, 
+            batch_size=64 ,
+            epochs=300, 
+            validation_data=(x_val, y_val), 
+            callbacks=[model_cbk, model_mckp])
