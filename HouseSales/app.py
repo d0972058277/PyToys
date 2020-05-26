@@ -84,7 +84,7 @@ model_mckp = keras.callbacks.ModelCheckpoint(model_dir + '/Best-model-1.h5',
 
 history = model.fit(x_train, y_train,  # 傳入訓練數據
                batch_size=64,  # 批次大小設為64
-               epochs=300,  # 整個dataset訓練300遍
+               epochs=10,  # 整個dataset訓練300遍
                validation_data=(x_val, y_val),  # 驗證數據
                callbacks=[model_cbk, model_mckp])  # Tensorboard回調函數紀錄訓練過程，ModelCheckpoint回調函數儲存最好的模型
 
@@ -144,7 +144,7 @@ model_mckp = keras.callbacks.ModelCheckpoint(model_dir + '/Best-model-2.h5',
                                              mode='min')
 model_2.fit(x_train, y_train, 
             batch_size=64 ,
-            epochs=300, 
+            epochs=10, 
             validation_data=(x_val, y_val), 
             callbacks=[model_cbk, model_mckp])
 
@@ -168,7 +168,7 @@ model_mckp = keras.callbacks.ModelCheckpoint(model_dir + '/Best-model-3.h5',
                                              mode='min')
 model_3.fit(x_train, y_train, 
             batch_size=64 ,
-            epochs=300, 
+            epochs=10, 
             validation_data=(x_val, y_val), 
             callbacks=[model_cbk, model_mckp])
 
@@ -192,6 +192,6 @@ model_mckp = keras.callbacks.ModelCheckpoint(model_dir + '/Best-model-4.h5',
                                              mode='min')
 model_4.fit(x_train, y_train, 
             batch_size=64 ,
-            epochs=300, 
+            epochs=10, 
             validation_data=(x_val, y_val), 
             callbacks=[model_cbk, model_mckp])

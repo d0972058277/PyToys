@@ -8,6 +8,9 @@ from tensorflow import keras
 from tensorflow.keras import layers
 import tensorflow_datasets as tfds
 
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 # 顯示TensorFlow Datasets目前提供的數據集
 tfds.list_builders()
 
@@ -124,8 +127,10 @@ model_1.compile(keras.optimizers.Adam(),
                metrics=[keras.metrics.CategoricalAccuracy()])
 
 # 訓練網路模型
-history_1 = model_1.fit(train_data,
-                        epochs=100, 
+# 用 CPU 跑比較快
+with tf.device("/cpu:0"):
+    history_1 = model_1.fit(train_data,
+                        epochs=10, 
                         validation_data=valid_data,
                         callbacks=[model_cbk, model_mckp])
 
@@ -172,7 +177,7 @@ model_2.compile(keras.optimizers.Adam(),
 
 # 訓練網路模型
 history_2 = model_2.fit(train_data,
-                        epochs=100, 
+                        epochs=10, 
                         validation_data=valid_data,
                         callbacks=[model_cbk, model_mckp])
 
@@ -332,7 +337,7 @@ model_3.compile(keras.optimizers.Adam(),
 
 # 訓練網路模型
 history_3 = model_3.fit(train_data,
-                        epochs=100, 
+                        epochs=10, 
                         validation_data=valid_data,
                         callbacks=[model_cbk, model_mckp])
 

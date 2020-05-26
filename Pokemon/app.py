@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 from tensorflow import keras
 from tensorflow.keras import layers
 
+# %load_ext tensorboard
+# %tensorboard --port 9530 --logdir lab3-logs
+
 pokemon_df = pd.read_csv('./pokemon-challenge/pokemon.csv')  # 讀取寶可夢數據
 pokemon_df.head()  # 顯示頭5比資料
 
@@ -167,7 +170,7 @@ model_1.compile(keras.optimizers.Adam(),
 # 訓練網路模型
 history_1 = model_1.fit(x_train_normal, y_train, 
                 batch_size=64 ,
-                epochs=200, 
+                epochs=10, 
                 validation_data=(x_val_normal, y_val),
                 callbacks=[model_cbk, model_mckp])
 
@@ -208,7 +211,7 @@ model_2.compile(keras.optimizers.Adam(),
 # 訓練網路模型
 history_2 = model_2.fit(x_train_one_hot, y_train, 
                     batch_size=64 ,
-                    epochs=200, 
+                    epochs=10, 
                     validation_data=(x_val_one_hot, y_val), 
                     callbacks=[model_cbk, model_mckp])
 
