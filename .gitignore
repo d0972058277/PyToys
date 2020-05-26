@@ -132,3 +132,5 @@ dmypy.json
 .DS_Store
 */lab2-logs/
 */lab3-logs/
+*/lab4-logs/
+*/tensorflow-datasets/
