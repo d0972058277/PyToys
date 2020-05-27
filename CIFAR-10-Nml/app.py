@@ -13,7 +13,7 @@ from preprocessing import parse_aug_fn, parse_fn
 # 讀取數據並分析
 # 載入Cifar10數據集：
 # 將train Data重新分成1:9等分，分別分給valid data, train data
-valid_split, train_split = tfds.Split.TRAIN.subsplit([10, 90])
+# valid_split, train_split = tfds.Split.TRAIN.subsplit([10, 90])
 # 取得訓練數據，並順便讀取data的資訊
 train_data, info = tfds.load("cifar10", split='train[10%:]', with_info=True, data_dir='/home/share/dataset/tensorflow-datasets')
 # 取得驗證數據
