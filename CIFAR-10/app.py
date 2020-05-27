@@ -58,8 +58,6 @@ plt.imshow(output)
 # 資料愈處理(Data Prepossessing ):
 # - 影像資料：將輸入資料做標準化，全部除以255，將像素值縮放到0~1之間。
 # - 標籤資料：做One-hot Encoding，例如類別2為[0, 0, 0, 0, 0, 0, 0, 0, 1, 0]。
-
-
 def parse_fn(dataset):
     x = tf.cast(dataset['image'], tf.float32) / 255.
     y = tf.one_hot(dataset['label'], 10)
